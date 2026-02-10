@@ -31,19 +31,22 @@ jobs:
             exit 1
           fi
 
-      # Generate logs
+            # Generate logs
       - name: Generate logs
         run: echo "CI pipeline completed successfully!"
-              - name: Slack Success Notification
+
+      # Slack Success Notification
+      - name: Slack Success Notification
         if: success()
         run: |
-          curl -X POST -H 'Content-type: application/json' \
+          curl -X POST -H "Content-type: application/json" \
           --data '{"text":"✅ CI Pipeline Succeeded!"}' \
           ${{ secrets.SLACK_WEBHOOK }}
 
+      # Slack Failure Notification
       - name: Slack Failure Notification
         if: failure()
         run: |
-          curl -X POST -H 'Content-type: application/json' \
+          curl -X POST -H "Content-type: application/json" \
           --data '{"text":"❌ CI Pipeline Failed!"}' \
           ${{ secrets.SLACK_WEBHOOK }}
