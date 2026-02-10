@@ -34,3 +34,16 @@ jobs:
       # Generate logs
       - name: Generate logs
         run: echo "CI pipeline completed successfully!"
+              - name: Slack Success Notification
+        if: success()
+        run: |
+          curl -X POST -H 'Content-type: application/json' \
+          --data '{"text":"✅ CI Pipeline Succeeded!"}' \
+          ${{ secrets.SLACK_WEBHOOK }}
+
+      - name: Slack Failure Notification
+        if: failure()
+        run: |
+          curl -X POST -H 'Content-type: application/json' \
+          --data '{"text":"❌ CI Pipeline Failed!"}' \
+          ${{ secrets.SLACK_WEBHOOK }}
